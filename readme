@@ -1,0 +1,222 @@
+# NICS_IMDDA
+Program and scripts to prepare and process NICS calculations for the IMDDA model compounds.
+
+(Using geometries optimized with Gaussian 16 followed by Gaussian 16 NMR calculation)
+
+I originally wanted to write this program in Fortran 95, but I realized that because of the varying lenght of the filenames, C++ would be more convenient. I'm saving the Fortran program to read from input because, who knows, it might come in handy some time in the future.
+
+1) Get last optimized coordinates
+
+2) Realign so that axis perpendicular to ring is z-axis
+
+3) Place Bq in center of ring, at +1 z, and at -1 z.
+
+4) Run NMR NBO (NLMO or NCO) NCS calculation
+
+5) Get NICS(1), NICS(-1), and NICS(0) values
+
+6) Get NICS(1)zz, NICS(-1), and NICS(0)zz values
+
+7) Get NLMO or CMO pi-contributions to NICS(1)zz, NICS(-1)zz, NICS(0)zz,
+          to get NICS(1)pi-zz, NICS(-1)pi-zz, NICS(0)pi-zz
+
+The only way to get NBO to use CMO with NCS clacluations is by
+installing NBO 5 or higher. The version of NBO currently installed is 3.1
+
+
+ Gaussian output:
+ Calculating GIAO nuclear magnetic shielding tensors.
+ SCF GIAO Magnetic shielding tensor (ppm):
+      1  C    Isotropic =    51.9784   Anisotropy =   145.4443
+   XX=    14.2024   YX=   -27.1885   ZX=    -0.0235
+   XY=   -45.1857   YY=    -7.2084   ZY=    -0.0047
+   XZ=     0.0429   YZ=    -0.0100   ZZ=   148.9413
+   Eigenvalues:   -34.2404    41.2344   148.9413
+      2  H    Isotropic =    24.6004   Anisotropy =     4.1248
+   XX=    27.1477   YX=    -0.0250   ZX=    -0.0014
+   XY=    -1.4330   YY=    24.7263   ZY=    -0.0025
+   XZ=     0.0053   YZ=     0.0023   ZZ=    21.9271
+   Eigenvalues:    21.9271    24.5238    27.3503
+
+
+
+ Natural Chemical Shielding Analysis:
+
+ Contributions to Atom    1 Sigma-XX (    14.2026 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1     -28.3302      -40.7407      12.4105       -40.7407      12.4105
+    2     -16.1242      -28.9125      12.7882       -28.9125      12.7882
+    3      10.9138       -7.1945      18.1083        -7.1945      18.1083
+    4    -141.8520     -146.1417       4.2897      -146.1417       4.2897
+    5      -3.0937       -5.2055       2.1117        -5.2055       2.1117
+    6       4.5384        3.3109       1.2275         3.3109       1.2275
+    7      -6.8138       -7.3401       0.5263        -7.3401       0.5263
+    8      -4.7364       -4.4878      -0.2486        -4.4878      -0.2486
+    9      -8.0675       -9.5787       1.5112        -9.5787       1.5112
+   10      -0.9251       -1.6400       0.7150        -1.6400       0.7150
+   12     203.6884        0.0057     203.6827         0.0057     203.6827
+   22       4.0166       -0.0340       4.0506        -0.0340       4.0506
+ Sum       13.2142     -247.9589     261.1731      -247.9589     261.1731
+
+ Contributions to Atom    1 Sigma-YX (   -27.1884 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1      63.5003       61.6134       1.8869        61.6134       1.8869
+    2     -59.6707      -56.3388      -3.3319       -56.3388      -3.3319
+    3      -9.0658      -10.3160       1.2502       -10.3160       1.2502tom
+    4     -17.1701      -16.0594      -1.1107       -16.0594      -1.1107
+    5     -13.2449      -13.7078       0.4630       -13.7078       0.4630
+    6       7.9660        8.0235      -0.0575         8.0235      -0.0575
+    7      -1.0182       -0.5771      -0.4411        -0.5771      -0.4411
+    9       1.2649        1.8561      -0.5912         1.8561      -0.5912
+   11      -1.1023       -1.3948       0.2924        -1.3948       0.2924
+ Sum      -28.5407      -26.9008      -1.6399       -26.9008      -1.6399
+ All contributions to Atom    1 Sigma-ZX are negligible.
+
+ Contributions to Atom    1 Sigma-XY (   -45.1856 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1      57.6278       57.0559       0.5719        57.0558       0.5719
+    2     -72.9230      -68.1608      -4.7622       -68.1608      -4.7622
+    3      -6.2281       -7.8789       1.6507        -7.8789       1.6507
+    4     -14.1467      -12.9203      -1.2265       -12.9203      -1.2265
+    5      -2.4559       -2.0263      -0.4295        -2.0263      -0.4295
+    6      -7.0269       -6.9370      -0.0899        -6.9370      -0.0899
+    7      -7.2461       -8.1587       0.9127        -8.1587       0.9127
+    8       4.7310        4.3386       0.3923         4.3386       0.3923
+    9       3.3212        3.8401      -0.5188         3.8401      -0.5188
+   11       1.3135        0.5729       0.7406         0.5729       0.7406
+   22      -1.2063       -1.1075      -0.0988        -1.1075      -0.0988
+ Sum      -44.2396      -41.3821      -2.8575       -41.3821      -2.8575
+
+ Contributions to Atom    1 Sigma-YY (    -7.2082 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1     -73.3797      -86.1719      12.7922       -86.1719      12.7922
+    2    -127.3288     -132.6558       5.3271      -132.6558       5.3270
+    3      -9.9095      -30.3052      20.3957       -30.3052      20.3957
+    4      12.5314       -1.4188      13.9502        -1.4188      13.9502
+    5      -4.9759       -5.7700       0.7940        -5.7700       0.7940
+    6     -14.0864      -13.3393      -0.7470       -13.3393      -0.7470
+    7       0.7421       -1.2019       1.9440        -1.2019       1.9440
+    8      -0.4412       -1.6376       1.1964        -1.6376       1.1964
+    9       3.8520       -0.2296       4.0816        -0.2296       4.0816
+   11      -1.9507       -1.7287      -0.2220        -1.7287      -0.2220
+   12     203.6538       -0.0217     203.6755        -0.0217     203.6755
+   21      -2.0846       -3.3458       1.2613        -3.3458       1.2613
+   22       6.8097        6.2021       0.6075         6.2021       0.6075
+ Sum       -6.5677     -271.6242     265.0566      -271.6242     265.0565
+ All contributions to Atom    1 Sigma-ZY are negligible.
+ All contributions to Atom    1 Sigma-XZ are negligible.
+ All contributions to Atom    1 Sigma-YZ are negligible.
+
+ Contributions to Atom    1 Sigma-ZZ (   148.9417 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1     -28.2619      -24.6142      -3.6478       -39.1506      10.8887
+    2     -17.8880      -29.8116      11.9236       -20.4814       2.5934
+    3       9.4961        0.9275       8.5686         0.8509       8.6452
+    4     -10.5196      -22.4627      11.9431       -13.8493       3.3296
+    5      -3.3088       -4.9363       1.6276        -4.4358       1.1270
+    6      -0.8747       -0.7140      -0.1607        -1.2073       0.3326
+    7      -3.2164       -4.9693       1.7530        -4.0760       0.8596
+    8       1.6597        0.3577       1.3020         0.6934       0.9663
+    9       3.5881        0.4837       3.1045         1.4597       2.1284
+   11      -4.5031       -5.7491       1.2460        -9.2584       4.7553
+   12     203.6453       -0.0064     203.6518        -0.0340     203.6793
+   21      -1.9862       -1.9156      -0.0706        -1.3854      -0.6008
+   22       3.3759        2.1749       1.2010         1.8689       1.5070
+ Sum      151.2066      -91.2355     242.4421       -89.0052     240.2118
+
+ Contributions to Isotropic shielding for atom    1 (    51.9787 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1     -43.3239      -50.5089       7.1850       -55.3544      12.0305
+    2     -53.7803      -63.7933      10.0130       -60.6832       6.9029
+    3       3.5002      -12.1907      15.6909       -12.2162      15.7164
+    4     -46.6134      -56.6744      10.0610       -53.8033       7.1898
+    5      -3.7928       -5.3039       1.5111        -5.1371       1.3443
+    6      -3.4742       -3.5808       0.1066        -3.7452       0.2710
+    7      -3.0960       -4.5038       1.4078        -4.2060       1.1100
+    8      -1.1726       -1.9225       0.7499        -1.8107       0.6380
+    9      -0.2091       -3.1082       2.8991        -2.7829       2.5737
+   11      -1.8610       -2.3646       0.5036        -3.5344       1.6733
+   12     203.6625       -0.0075     203.6700        -0.0167     203.6792
+   21      -1.2046       -1.7917       0.5871        -1.6149       0.4103
+   22       4.7340        2.7810       1.9530         2.6790       2.0551
+ Sum       53.3686     -202.9694     256.3380      -202.2259     255.5945
+
+ Contributions to Atom    2 Sigma-XX (    27.1478 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1      28.2757        1.6108      26.6649         1.6108      26.6649
+    2       0.5285       -1.4660       1.9946        -1.4660       1.9946
+    3       4.4091       -0.3416       4.7507        -0.3416       4.7507
+    4      -6.2982       -6.9141       0.6158        -6.9141       0.6158
+    9      -0.8096       -1.0406       0.2310        -1.0406       0.2310
+   22       1.0395       -0.1408       1.1803        -0.1408       1.1803
+ Sum       27.1452       -8.2922      35.4373        -8.2922      35.4373
+
+ Contributions to Atom    2 Sigma-YX (    -0.0250 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1       0.6742       -2.3515       3.0257        -2.3515       3.0257
+    2      -1.1555       -2.8460       1.6904        -2.8460       1.6904
+    3      -1.6199       -2.2884       0.6685        -2.2884       0.6685
+    5      -0.3643       -1.4235       1.0592        -1.4235       1.0592
+    6       1.2114        1.1275       0.0839         1.1275       0.0839
+    9       1.0063        0.6925       0.3138         0.6925       0.3138
+ Sum       -0.2478       -7.0894       6.8416        -7.0894       6.8416
+ All contributions to Atom    2 Sigma-ZX are negligible.
+
+ Contributions to Atom    2 Sigma-XY (    -1.4330 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1       0.9118       -2.6630       3.5748        -2.6630       3.5748
+    2      -3.6650       -3.6514      -0.0136        -3.6514      -0.0136
+    3       0.5343       -0.9332       1.4674        -0.9332       1.4674
+    4       1.2352       -0.6658       1.9010        -0.6658       1.9010
+    7      -0.2779       -1.5268       1.2490        -1.5268       1.2490
+ Sum       -1.2615       -9.4402       8.1787        -9.4402       8.1787
+
+ Contributions to Atom    2 Sigma-YY (    24.7263 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1      27.3769        3.8924      23.4846         3.8924      23.4846
+    2      -6.4266       -6.1013      -0.3253        -6.1013      -0.3253
+    3       3.2288       -0.5571       3.7858        -0.5571       3.7858
+    4       1.3096        0.1829       1.1266         0.1829       1.1266
+    6      -1.8562       -1.4872      -0.3690        -1.4872      -0.3690
+    9       1.1435       -0.0715       1.2150        -0.0715       1.2150
+ Sum       24.7759       -4.1418      28.9177        -4.1418      28.9177
+ All contributions to Atom    2 Sigma-ZY are negligible.
+ All contributions to Atom    2 Sigma-XZ are negligible.
+ All contributions to Atom    2 Sigma-YZ are negligible.
+
+ Contributions to Atom    2 Sigma-ZZ (    21.9272 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1      24.3297        1.8301      22.4996         2.4584      21.8713
+    2      -0.8422        0.4826      -1.3248        -0.4925      -0.3497
+    3      -2.9758       -0.1602      -2.8156        -5.5685       2.5927
+    4      -0.3309        1.0132      -1.3441         0.1280      -0.4589
+    5      -0.3649       -0.4003       0.0354        -2.5203       2.1555
+    7      -0.1215       -0.3286       0.2071        -1.8831       1.7616
+   11       0.1846       -0.5202       0.7047        -3.3011       3.4857
+   12       1.6444        1.0104       0.6340         2.1767      -0.5323
+ Sum       21.5235        2.9271      18.5964        -9.0023      30.5257
+
+ Contributions to Isotropic shielding for atom    2 (    24.6004 ppm):
+                         Standard Origin              Atomic Origin
+ NLMO      Total    Paramagnetic  Diamagnetic   Paramagnetic  Diamagnetic
+    1      26.6608        2.4444      24.2164         2.6539      24.0069
+    2      -2.2467       -2.3616       0.1148        -2.6866       0.4399
+    3       1.5540       -0.3530       1.9070        -2.1557       3.7097
+    4      -1.7732       -1.9060       0.1328        -2.2010       0.4279
+    5      -0.1584       -0.5719       0.4134        -1.2785       1.1201
+    7      -0.1835       -0.4951       0.3116        -1.0132       0.8297
+   11      -0.0585       -0.3312       0.2727        -1.2582       1.1997
+   12       1.0068        0.6535       0.3533         1.0423      -0.0355
+ Sum       24.8013       -2.9207      27.7220        -6.8972      31.6985
+
