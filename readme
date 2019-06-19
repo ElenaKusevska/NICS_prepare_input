@@ -1,5 +1,5 @@
 # NICS_IMDDA
-Program and scripts to prepare and process NICS calculations for the IMDDA model compounds.
+Program and scripts to prepare and process NICS calculations.
 
 (Using geometries optimized with Gaussian 16 followed by Gaussian 16 NMR calculation)
 
