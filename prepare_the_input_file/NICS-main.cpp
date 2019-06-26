@@ -51,7 +51,6 @@ int main() {
    Eigen::MatrixXd angle_to_normal(3,3);
    Eigen::Matrix3d inert;
    Eigen::MatrixXd ring_coordinates(1,1), coordinates(1,1);
-   double min_angle_to_normal;
    int min_row, min_col, min_vec;
    std::vector<double> NICS0, NICS1, NICS2;
 
@@ -200,7 +199,7 @@ int main() {
             angle_to_normal(k,2) = fabs(acos(eigenvec_k.dot(normal1) /
                      (eigenvec_k.norm() * normal1.norm())) - M_PI * 2.0);
          }
-         min_angle_to_normal = angle_to_normal.minCoeff(&min_row, &min_col);
+         angle_to_normal.minCoeff(&min_row, &min_col);
          min_vec = min_row;
          for (k=1; k<3; k=k+1) {
             normal2(k) = eigenvecs(k,min_vec).real();
@@ -270,20 +269,32 @@ int main() {
          std::ofstream out_xyz_file;
          out_xyz_file.open(out_xyz_file_name);
 
-         out_xyz_file << std::fixed << std::setprecision(7);
+         // printing:
          out_xyz_file << x.size() + 3 << std::endl;
          out_xyz_file << "0 1" << std::endl;
          for (kk=0; kk<x.size(); kk=kk+1) {
-            out_xyz_file << lables[kk] << "         "
-                         << coordinates(kk,0) << "         "
-                         << coordinates(kk,1) << "         "
+            out_xyz_file << std::left << std::setw(2) << lables[kk] 
+                         << std::setw(18) << std::right
+                         << std::fixed << std::setprecision(7)
+                         << coordinates(kk,0) 
+                         << std::setw(19) << std::right
+                         << std::fixed << std::setprecision(7)
+                         << coordinates(kk,1) 
+                         << std::setw(19) << std::right
+                         << std::fixed << std::setprecision(7)
                          << coordinates(kk,2) << std::endl;
          }
          for (kk=x.size(); kk<x.size()+3; kk=kk+1) {
-         out_xyz_file << "Br" << "         "
-                      << coordinates(kk,0) << "         "
-                      << coordinates(kk,1) << "         " 
-                      << coordinates(kk,2) << "         " << std::endl;
+         out_xyz_file << std::left << std::setw(2) << "Bq"
+                      << std::setw(18) << std::right
+                      << std::fixed << std::setprecision(7)
+                      << coordinates(kk,0) 
+                      << std::setw(19) << std::right
+                      << std::fixed << std::setprecision(7)
+                      << coordinates(kk,1)
+                      << std::setw(19) << std::right
+                      << std::fixed << std::setprecision(7)
+                      << coordinates(kk,2) << std::endl;
          }
 
          // End of loop, reset for next ring:

@@ -182,6 +182,13 @@ int read_input_file(int& nmols, std::vector<std::string>& filenames, \
    char test_char;
    int nrings_total, nfile, counts, finds_nl, rr, temp_int;
 
+   // check input file:
+   // for line n
+   // if old = m new != f wrong
+   // if old = f new != r wrong
+   // if old = r new != r or m wrong
+   // if wrong cout "there is a mistake at line n
+
    //----------------------------------
    // count number of molecules,
    // and the total number of rings:
