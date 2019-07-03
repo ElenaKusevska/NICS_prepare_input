@@ -1,1 +1,21 @@
-Works well for all rings on all types of molecules
+This program works in the following way:
+
+1) It finds the center of the ring
+2) It moves the molecule so that the center of the ring is at
+      origin.
+3) It uses multivariate regression with x and y as the independent and
+      z as the dependent variable to find the best linear fit for a
+      plane passing through all the atoms that make up the ring
+4) It finds a normal to the plane of the ring centered at the origin
+5) It normalizes the normal to a length of 1
+6) It places the dummy atoms at the (normal(0), normal(1), noemal(2)) and
+      the (-normal(0), -normal(1), -normal(2)) positions, as well as
+      at (0,0,0)
+7) It aligns the normal with the z-axis. Now the dummy atoms are at
+      (0,0,1), (0,0,0), and (0,0,-1).
+
+This approach works much better. It's easier to check if the resulting
+geometry is correct (just looking at the coordinates for the dummy
+atoms will confirm this). And it works for all molecules regardless of
+whether they are symmetric or not.
+

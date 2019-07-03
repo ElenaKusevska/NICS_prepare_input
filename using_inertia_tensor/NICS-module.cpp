@@ -170,6 +170,7 @@ int align (Eigen::Vector3d vec_in, Eigen::MatrixXd& coords) {
          vecz = Ry*vecxz; //should have the form [0,0,z]
       }
    }
+   coords = coords_t.transpose();
    std::cout << "vecz: " << vecz << std::endl;
    return 0;
 }

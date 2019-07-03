@@ -1,1 +1,17 @@
-Does not work well if the ring is not trully symmetric
+This program works in the following way:
+
+1) It finds the center of the ring
+2) It places the center of the ring at (0,0,0)
+3) If the ring is symmetric and planar, it is an oblate to
+      and therefore two of the principal components of the inertia tensor
+      will lie in the plane of the ring, and one will be normal to the
+      plane of the ring. So, the program diagonalizes the inertia tensor
+      gettinf three normalized eigenvectors corresponding to the three
+      principal components of the inertia tensor
+4) It identifies the eigenvector that is normal to the plane
+5) Aligns this eigenvector to the z-axis
+6) Now the ring is in the xy plane and perpendicular to the z-axis
+7) It places the dummy atoms at (0,0,1), (0,0,0) and (0,0,-1)
+
+IMPORTANT: This doesn't work well if the ring is not trully symmetric.
+

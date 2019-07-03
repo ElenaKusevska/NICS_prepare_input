@@ -83,6 +83,8 @@ int main() {
                   ssin >> temp;
                   split_line.push_back(temp);
                }
+               // uncomment if segmentation fault stod
+               //std::cout << print_vector_string(split_line) << std::endl;
                if (split_line.size() > 1) {
                   // get lables and coordinates for whole molecule
                   lables.push_back(split_line[0]);
