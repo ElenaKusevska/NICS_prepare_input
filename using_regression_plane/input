@@ -1,0 +1,11 @@
+molecule 3:
+file S_TS4-cis_intermediate
+ring 1 2 3 4 5
+
+molecule 6:
+file S_TS4-trans
+ring 1 2 3 4 5
+
+molecule 7:
+file S_TS5-trans
+ring 1 2 3 4 5

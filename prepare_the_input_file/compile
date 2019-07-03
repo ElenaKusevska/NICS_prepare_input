@@ -1,1 +1,0 @@
-g++ -std=c++11 -Wunused -g -I /home/elena/Eigen NICS-main.cpp NICS-module.cpp
