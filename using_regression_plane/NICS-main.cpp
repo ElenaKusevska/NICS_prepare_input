@@ -247,31 +247,7 @@ int main() {
          align(normal1, coordinates);
          align(normal1, ring_coordinates);
 
-//         // Print final coordinates for the ring
-//         out_ring_xyz_file_name = filenames[i] + "_ring_"
-//            + std::to_string(j) + ".xyz";
-//         if_file_exist_delete(out_ring_xyz_file_name);
-//         std::ofstream out_ring_xyz_file;
-//         out_ring_xyz_file.open(out_ring_xyz_file_name);
-// 
-//         out_ring_xyz_file << rings_atoms[ring_num].size() + 2 << std::endl;
-//         out_ring_xyz_file << "sldgjksjg" << std::endl;
-//         for (kk=0; kk<rings_atoms[ring_num].size(); kk=kk+1) {
-//            out_ring_xyz_file << lables_ring[kk] << "         "
-//                         << ring_coordinates(kk,0) << "         " 
-//                         << ring_coordinates(kk,1) << "         "
-//                         << ring_coordinates(kk,2) << std::endl;
-//         }
-//         out_ring_xyz_file << "N          " << normal1(0) << "         "
-//                           << normal1(1) << "         " << normal1(2)
-//                           << std::endl;
-//         for (k=0; k<3; k=k+1) {
-//            out_ring_xyz_file << "O          " << normal2(0) << "         "
-//                              << normal2(1) << "         " << normal2(2)
-//                              << std::endl;
-//         }
-
-         // Print final coordinates for the ring,
+         // Print final coordinates for the molecule,
          // adding the dummy atoms:
          out_xyz_file_name = filenames[i] + "_" + 
                                   std::to_string(j) + ".xyz";
