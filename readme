@@ -1,11 +1,15 @@
-# NICS_IMDDA
 Program and scripts to prepare and process NICS calculations.
 
 (Using geometries optimized with Gaussian 16 followed by Gaussian 16 NMR calculation)
 
-I originally wanted to write this program in Fortran 95, but I realized that because of the varying lenght of the filenames, C++ would be more convenient. I'm saving the Fortran program to read from input because, who knows, it might come in handy some time in the future.
+I originally wanted to write this program in Fortran 95, but I realized that 
+because of the varying lenght of the filenames, C++ would be more convenient. 
+I'm saving the Fortran program to read from input because, who knows, 
+it might come in handy some time in the future.
 
-1) Get last optimized coordinates
+The general workflow for the NMR calculation is the following:
+
+1) Get optimized geometry coordinates
 
 2) Realign so that axis perpendicular to ring is z-axis
 
@@ -15,7 +19,7 @@ I originally wanted to write this program in Fortran 95, but I realized that bec
 
 5) Get NICS(1), NICS(-1), and NICS(0) values
 
-6) Get NICS(1)zz, NICS(-1), and NICS(0)zz values
+6) Get NICS(1)zz, NICS(-1)zz, and NICS(0)zz values
 
 7) Get NLMO or CMO pi-contributions to NICS(1)zz, NICS(-1)zz, NICS(0)zz,
           to get NICS(1)pi-zz, NICS(-1)pi-zz, NICS(0)pi-zz
