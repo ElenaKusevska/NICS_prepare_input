@@ -7,7 +7,7 @@ because of the varying lenght of the filenames, C++ would be more convenient.
 I'm saving the Fortran program to read from input because, who knows, 
 it might come in handy some time in the future.
 
-The general workflow for the NMR calculation is the following:
+The general workflow for calculating the NICS values is the following:
 
 1) Get optimized geometry coordinates
 
