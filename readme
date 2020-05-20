@@ -13,9 +13,9 @@ The general workflow for the NMR calculation is the following:
 
 2) Realign so that the z-axis is perpendicular to ring
     I considered two approaches to perform this step,
-    implemented in "1_using_inertia_tensor" and
-    "2_using_regression_plane". The method in
-    "2_using_regression_plane" gives much better results
+    implemented in "using_inertia_tensor" and
+    "using_regression_plane". The method in
+    "using_regression_plane" gives much better results
 
 3) Place Bq in center of ring, at +1 z, and at -1 z.
 
